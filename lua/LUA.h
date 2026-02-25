@@ -43,7 +43,7 @@
 
 #include "common.h"
 
-void save_to_file(const char* filename, unsigned char* data, int size);
+void save_to_file(const char *filename, unsigned char *data, int size);
 int get_freeRam();
 
 #ifndef GLOBALS_LUA

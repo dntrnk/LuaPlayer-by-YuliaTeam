@@ -46,14 +46,15 @@
 
 #define MAX_ARRAY_SIZE 100
 
-typedef struct {
+typedef struct
+{
     int i;
     int max;
     float step;
     float ms;
-    LUA_timer* timer;
-    const char* func;
-    const char* funcName;
+    LUA_timer *timer;
+    const char *func;
+    const char *funcName;
 } AsyncOperation;
 
 AsyncOperation asyncArray[MAX_ARRAY_SIZE];
@@ -71,14 +72,14 @@ int upd(AsyncOperation *async, const char *luaFuncCode, lua_State *L) {
 
     if ((luaL_loadstring(L, luaFuncCode) && lua_pcall(L, 0, 0, 0)) != 0)
         return luaL_error(L, "asyncCycle error 1");
-    
+
     lua_getglobal(L, async->funcName);
     // Передача значения async->i в Lua функцию
     lua_pushnumber(L, async->i);
 
     // Вызов Lua функции
     if (lua_pcall(L, 1, 0, 0) != 0) {
-       return luaL_error(L, "asyncCycle error 2");
+        return luaL_error(L, "asyncCycle error 2");
     }
 
     return 0;
@@ -103,16 +104,15 @@ void update(lua_State *L) {
 
 }
 
-void newAsyncOperation(int from, int to, float step, float ms, const char* func, const char* funcName) {
+void newAsyncOperation(int from, int to, float step, float ms, const char *func, const char *funcName) {
     if (numOfAsyncOperations < MAX_ARRAY_SIZE) {
-        AsyncOperation newAsync = {from, to, step, ms, TIMER_CREATE(), func, funcName};
+        AsyncOperation newAsync = { from, to, step, ms, TIMER_CREATE(), func, funcName };
         asyncArray[numOfAsyncOperations] = newAsync;
         numOfAsyncOperations++;
     }
 }
 
-static int asyncCycle_UPDATE(lua_State *L)
-{
+static int asyncCycle_UPDATE(lua_State *L) {
     if (lua_gettop(L) != 0)
         return luaL_error(L, "asyncCycle.update() takes 0 arguments");
 
@@ -121,8 +121,7 @@ static int asyncCycle_UPDATE(lua_State *L)
     return 0;
 }
 
-static int asyncCycle_NEW(lua_State *L)
-{
+static int asyncCycle_NEW(lua_State *L) {
     if (lua_gettop(L) != 6)
         return luaL_error(L, "asyncCycle.new(from, to, step, ms, func, funcName) takes 5 arguments");
 
@@ -130,8 +129,8 @@ static int asyncCycle_NEW(lua_State *L)
     int to = luaL_checknumber(L, 2);
     float step = luaL_checknumber(L, 3);
     float ms = luaL_checknumber(L, 4);
-    const char* func = luaL_checkstring(L, 5);
-    const char* funcName = luaL_checkstring(L, 6);
+    const char *func = luaL_checkstring(L, 5);
+    const char *funcName = luaL_checkstring(L, 6);
 
     newAsyncOperation(from, to, step, ms, func, funcName);
 
@@ -144,8 +143,7 @@ static const luaL_Reg async_methods[] = {
     {0, 0}
 };
 
-int ASYNC_init(lua_State *L)
-{
+int ASYNC_init(lua_State *L) {
     luaL_register(L, "asyncCycle", async_methods);
 
     return 0;

@@ -43,15 +43,14 @@
 
 #include "timer.h"
 
-UserdataStubs(Timer, LUA_timer*);
+UserdataStubs(Timer, LUA_timer *);
 
 clock_t getCMs(void) {
     return clock() / (u64)(CLOCKS_PER_SEC / 1000);
 }
 
-LUA_timer* TIMER_CREATE()
-{
-    LUA_timer* newTimer = (LUA_timer*)malloc(sizeof(LUA_timer));
+LUA_timer *TIMER_CREATE() {
+    LUA_timer *newTimer = (LUA_timer *)malloc(sizeof(LUA_timer));
     if (!newTimer) {
         return NULL;
     }
@@ -62,29 +61,24 @@ LUA_timer* TIMER_CREATE()
     return newTimer;
 }
 
-float TIMER_START(LUA_timer* timer)
-{
+float TIMER_START(LUA_timer *timer) {
     if (timer->measuredTime)
         return (getCMs() - timer->measuredTime + timer->offset);
-    else
-    {
+    else {
         timer->measuredTime = getCMs();
         return timer->offset;
     }
 }
 
-float TIMER_TIME(LUA_timer* timer)
-{
-    if(timer->measuredTime)
+float TIMER_TIME(LUA_timer *timer) {
+    if (timer->measuredTime)
         return (getCMs() - timer->measuredTime + timer->offset);
     else
         return timer->offset;
 }
 
-float TIMER_STOP(LUA_timer* timer)
-{
-    if(timer->measuredTime)
-    {
+float TIMER_STOP(LUA_timer *timer) {
+    if (timer->measuredTime) {
         timer->offset = getCMs() - timer->measuredTime + timer->offset;
         timer->measuredTime = (0);
     }
@@ -92,15 +86,14 @@ float TIMER_STOP(LUA_timer* timer)
     return timer->offset;
 }
 
-float TIMER_RESET(LUA_timer* timer)
-{
+float TIMER_RESET(LUA_timer *timer) {
     clock_t ret = 0;
 
-    if(timer->measuredTime)
+    if (timer->measuredTime)
         ret = getCMs() - timer->measuredTime + timer->offset;
     else
         ret = timer->offset;
-    
+
     timer->offset = 0;
     timer->measuredTime = 0;
 
@@ -108,10 +101,8 @@ float TIMER_RESET(LUA_timer* timer)
 }
 
 
-int TIMER_REMOVE(LUA_timer** timer)
-{
-    if(*timer)
-    {
+int TIMER_REMOVE(LUA_timer **timer) {
+    if (*timer) {
         free(*timer);
         *timer = NULL;
     }
@@ -129,13 +120,12 @@ static int luaTIMER_create(lua_State *L) {
         return luaL_error(L, "timer.create() error creating timer");
 
     *pushTimer(L) = tm;
-    
+
     return 1;
 }
 
-static int luaTIMER_start(lua_State *L)
-{
-    if(lua_gettop(L) != 1)
+static int luaTIMER_start(lua_State *L) {
+    if (lua_gettop(L) != 1)
         return luaL_error(L, "timer.start(timered) takes 1 argument");
 
     LUA_timer *tm = *toTimer(L, 1);
@@ -145,9 +135,8 @@ static int luaTIMER_start(lua_State *L)
     return 1;
 }
 
-static int luaTIMER_time(lua_State *L)
-{
-    if(lua_gettop(L) != 1)
+static int luaTIMER_time(lua_State *L) {
+    if (lua_gettop(L) != 1)
         return luaL_error(L, "timer.time(timered) takes 1 argument");
 
     LUA_timer *tm = *toTimer(L, 1);
@@ -157,9 +146,8 @@ static int luaTIMER_time(lua_State *L)
     return 1;
 }
 
-static int luaTIMER_stop(lua_State *L)
-{
-    if(lua_gettop(L) != 1)
+static int luaTIMER_stop(lua_State *L) {
+    if (lua_gettop(L) != 1)
         return luaL_error(L, "timer.stop(timered) takes 1 argument");
 
     LUA_timer *tm = *toTimer(L, 1);
@@ -169,23 +157,21 @@ static int luaTIMER_stop(lua_State *L)
     return 1;
 }
 
-static int luaTIMER_reset(lua_State *L)
-{
-    if(lua_gettop(L) != 1)
+static int luaTIMER_reset(lua_State *L) {
+    if (lua_gettop(L) != 1)
         return luaL_error(L, "timer.reset(timered) takes 1 argument");
 
     LUA_timer *tm = *toTimer(L, 1);
-    
+
     lua_pushnumber(L, TIMER_RESET(tm));
 
     return 1;
 }
 
-static int luaTIMER_remove(lua_State *L)
-{
-    if(lua_gettop(L) != 1)
+static int luaTIMER_remove(lua_State *L) {
+    if (lua_gettop(L) != 1)
         return luaL_error(L, "timer.remove(timered) takes 1 argument");
-    
+
     TIMER_REMOVE(toTimer(L, 1));
 
     return 0;
@@ -201,8 +187,7 @@ static const luaL_Reg TIMER_methods[] = {
     {0, 0}
 };
 
-int TIMER_init(lua_State *L)
-{
+int TIMER_init(lua_State *L) {
     luaL_register(L, "timer", TIMER_methods);
 
     return 0;

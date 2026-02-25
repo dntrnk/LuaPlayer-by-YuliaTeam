@@ -43,17 +43,18 @@
 
 #include "common.h"
 
-typedef struct LUA_timer {
+typedef struct LUA_timer
+{
     clock_t measuredTime;
     clock_t offset;
 } LUA_timer;
 
-LUA_timer* TIMER_CREATE();
-float TIMER_START(LUA_timer* timer);
-float TIMER_TIME(LUA_timer* timer);
-float TIMER_STOP(LUA_timer* timer);
-float TIMER_RESET(LUA_timer* timer);
-int TIMER_REMOVE(LUA_timer** timer);
+LUA_timer *TIMER_CREATE();
+float TIMER_START(LUA_timer *timer);
+float TIMER_TIME(LUA_timer *timer);
+float TIMER_STOP(LUA_timer *timer);
+float TIMER_RESET(LUA_timer *timer);
+int TIMER_REMOVE(LUA_timer **timer);
 
 int TIMER_init(lua_State *L);
 

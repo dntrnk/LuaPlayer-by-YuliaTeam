@@ -56,6 +56,6 @@ extern char LPYTGameTitle[256];
 #endif
 
 int SYSTEM_init(lua_State *L);
-int SYSTEM_message(const char* str, int mode, bool cleanBG, char* bgpath, lua_State *L);
+int SYSTEM_message(const char *str, int mode, bool cleanBG, char *bgpath, lua_State *L);
 
 //EOF

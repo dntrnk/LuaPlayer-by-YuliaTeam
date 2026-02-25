@@ -44,8 +44,7 @@
 #include "vfpu_math.h"
 #include "../libs/vfpu_math.h"
 
-static int MATH_ABSF(lua_State *L)
-{
+static int MATH_ABSF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.abs(number) takes 1 argument");
 
@@ -54,8 +53,7 @@ static int MATH_ABSF(lua_State *L)
     return 1;
 }
 
-static int MATH_ACOSF(lua_State *L)
-{
+static int MATH_ACOSF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.acos(number) takes 1 argument");
 
@@ -64,8 +62,7 @@ static int MATH_ACOSF(lua_State *L)
     return 1;
 }
 
-static int MATH_ASINF(lua_State *L)
-{
+static int MATH_ASINF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.asin(number) takes 1 argument");
 
@@ -74,8 +71,7 @@ static int MATH_ASINF(lua_State *L)
     return 1;
 }
 
-static int MATH_ATAN2F(lua_State *L)
-{
+static int MATH_ATAN2F(lua_State *L) {
     if (lua_gettop(L) != 2)
         return luaL_error(L, "math.atan2(x, y) takes 2 arguments");
 
@@ -84,8 +80,7 @@ static int MATH_ATAN2F(lua_State *L)
     return 1;
 }
 
-static int MATH_ATANF(lua_State *L)
-{
+static int MATH_ATANF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.atan(number) takes 1 argument");
 
@@ -94,18 +89,16 @@ static int MATH_ATANF(lua_State *L)
     return 1;
 }
 
-static int MATH_CEILF(lua_State *L)
-{
+static int MATH_CEILF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.ceil(number) takes 1 argument");
 
     lua_pushnumber(L, vfpu_ceilf((float)lua_tonumber(L, 1)));
 
     return 1;
-} 
+}
 
-static int MATH_COSHF(lua_State *L)
-{
+static int MATH_COSHF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.cosh(number) takes 1 argument");
 
@@ -114,18 +107,16 @@ static int MATH_COSHF(lua_State *L)
     return 1;
 }
 
-static int MATH_COSF(lua_State *L)
-{
+static int MATH_COSF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.cos(number) takes 1 argument");
 
     lua_pushnumber(L, vfpu_cosf((float)lua_tonumber(L, 1)));
 
     return 1;
-} 
+}
 
-static int MATH_DEGF(lua_State *L)
-{
+static int MATH_DEGF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.deg(radians) takes 1 argument");
 
@@ -134,8 +125,7 @@ static int MATH_DEGF(lua_State *L)
     return 1;
 }
 
-static int MATH_EXPF(lua_State *L)
-{
+static int MATH_EXPF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.exp(number) takes 1 argument");
 
@@ -144,8 +134,7 @@ static int MATH_EXPF(lua_State *L)
     return 1;
 }
 
-static int MATH_FLOORF(lua_State *L)
-{
+static int MATH_FLOORF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.floor(number) takes 1 argument");
 
@@ -154,18 +143,16 @@ static int MATH_FLOORF(lua_State *L)
     return 1;
 }
 
-static int MATH_FMODF(lua_State *L)
-{
+static int MATH_FMODF(lua_State *L) {
     if (lua_gettop(L) != 2)
         return luaL_error(L, "math.fmod(x, y) takes 2 arguments");
 
-    lua_pushnumber(L, vfpu_fmodf((float)lua_tonumber(L, 1), (float)lua_tonumber(L,2)));
+    lua_pushnumber(L, vfpu_fmodf((float)lua_tonumber(L, 1), (float)lua_tonumber(L, 2)));
 
     return 1;
 }
 
-static int MATH_FREXPF(lua_State *L)
-{
+static int MATH_FREXPF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.frexp(x) takes 1 argument");
 
@@ -178,8 +165,7 @@ static int MATH_FREXPF(lua_State *L)
     return 2;
 }
 
-static int MATH_LDEXPF(lua_State *L)
-{
+static int MATH_LDEXPF(lua_State *L) {
     if (lua_gettop(L) != 2)
         return luaL_error(L, "math.ldexp(x, exp) takes 2 arguments");
 
@@ -188,8 +174,7 @@ static int MATH_LDEXPF(lua_State *L)
     return 1;
 }
 
-static int MATH_LOG10F(lua_State *L)
-{
+static int MATH_LOG10F(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.log10(number) takes 1 argument");
 
@@ -198,8 +183,7 @@ static int MATH_LOG10F(lua_State *L)
     return 1;
 }
 
-static int MATH_LOGF(lua_State *L)
-{
+static int MATH_LOGF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.log(number) takes 1 argument");
 
@@ -208,40 +192,37 @@ static int MATH_LOGF(lua_State *L)
     return 1;
 }
 
-static int MATH_MAXF(lua_State *L)
-{
+static int MATH_MAXF(lua_State *L) {
     int n = lua_gettop(L);  /* number of arguments */
     lua_Number dmax = luaL_checknumber(L, 1);
 
     int i;
-    for (i=2; i<=n; i++) {
+    for (i = 2; i <= n; i++) {
         lua_Number d = luaL_checknumber(L, i);
         if (d > dmax)
-        dmax = d;
+            dmax = d;
     }
 
     lua_pushnumber(L, dmax);
     return 1;
 }
 
-static int MATH_MINF(lua_State *L)
-{
+static int MATH_MINF(lua_State *L) {
     int n = lua_gettop(L);  /* number of arguments */
     lua_Number dmin = luaL_checknumber(L, 1);
 
     int i;
-    for (i=2; i<=n; i++) {
+    for (i = 2; i <= n; i++) {
         lua_Number d = luaL_checknumber(L, i);
         if (d < dmin)
-        dmin = d;
+            dmin = d;
     }
 
     lua_pushnumber(L, dmin);
     return 1;
 }
 
-static int MATH_MODFF(lua_State *L)
-{
+static int MATH_MODFF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.modf(x) takes 1 argument");
 
@@ -250,12 +231,11 @@ static int MATH_MODFF(lua_State *L)
 
     lua_pushnumber(L, intpart);
     lua_pushnumber(L, fractpart);
-    
+
     return 2;
 }
 
-static int MATH_POWF(lua_State *L)
-{
+static int MATH_POWF(lua_State *L) {
     if (lua_gettop(L) != 2)
         return luaL_error(L, "math.pow(x, y) takes 2 arguments");
 
@@ -264,8 +244,7 @@ static int MATH_POWF(lua_State *L)
     return 1;
 }
 
-static int MATH_RADF(lua_State *L)
-{
+static int MATH_RADF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.rad(degrees) takes 1 argument");
 
@@ -274,8 +253,7 @@ static int MATH_RADF(lua_State *L)
     return 1;
 }
 
-static int MATH_RANDOM(lua_State *L)
-{
+static int MATH_RANDOM(lua_State *L) {
     if (lua_gettop(L) != 0)
         return luaL_error(L, "math.random() takes no arguments");
 
@@ -284,8 +262,7 @@ static int MATH_RANDOM(lua_State *L)
     return 1;
 }
 
-static int MATH_RANDOMSEED(lua_State *L)
-{
+static int MATH_RANDOMSEED(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.randomseed(seed) takes 1 argument");
 
@@ -294,8 +271,7 @@ static int MATH_RANDOMSEED(lua_State *L)
     return 0;
 }
 
-static int MATH_SINHF(lua_State *L)
-{
+static int MATH_SINHF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.sinh(x) takes 1 argument");
 
@@ -304,8 +280,7 @@ static int MATH_SINHF(lua_State *L)
     return 1;
 }
 
-static int MATH_SINF(lua_State *L)
-{
+static int MATH_SINF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.sin(x) takes 1 argument");
 
@@ -314,8 +289,7 @@ static int MATH_SINF(lua_State *L)
     return 1;
 }
 
-static int MATH_SQRTF(lua_State *L)
-{
+static int MATH_SQRTF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.sqrt(x) takes 1 argument");
 
@@ -324,8 +298,7 @@ static int MATH_SQRTF(lua_State *L)
     return 1;
 }
 
-static int MATH_TANHF(lua_State *L)
-{
+static int MATH_TANHF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.tanh(x) takes 1 argument");
 
@@ -334,8 +307,7 @@ static int MATH_TANHF(lua_State *L)
     return 1;
 }
 
-static int MATH_TANF(lua_State *L)
-{
+static int MATH_TANF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.tan(x) takes 1 argument");
 
@@ -344,8 +316,7 @@ static int MATH_TANF(lua_State *L)
     return 1;
 }
 
-static int MATH_COTF(lua_State *L)
-{
+static int MATH_COTF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.cot(x) takes 1 argument");
 
@@ -354,8 +325,7 @@ static int MATH_COTF(lua_State *L)
     return 1;
 }
 
-static int MATH_COTHF(lua_State *L)
-{
+static int MATH_COTHF(lua_State *L) {
     if (lua_gettop(L) != 1)
         return luaL_error(L, "math.coth(x) takes 1 argument");
 
@@ -398,8 +368,7 @@ static const luaL_Reg VFPU_methods[] = {
     {0,0}
 };
 
-int VFPU_init(lua_State *L)
-{
+int VFPU_init(lua_State *L) {
     luaL_register(L, "math", VFPU_methods);
 
     return 1;

@@ -43,9 +43,8 @@
 
 #include "ctrl.h"
 
-static int CTRL_read(lua_State *L)
-{
-    if(lua_gettop(L) != 0)
+static int CTRL_read(lua_State *L) {
+    if (lua_gettop(L) != 0)
         return luaL_error(L, "buttons.read() takes no arguments");
 
     controls_read();
@@ -53,59 +52,54 @@ static int CTRL_read(lua_State *L)
     return 0;
 }
 
-static int CTRL_press(lua_State *L)
-{
-    if(lua_gettop(L) != 1) 
-            return luaL_error(L, "buttons.pressed(button) takes 1 argument"); 
+static int CTRL_press(lua_State *L) {
+    if (lua_gettop(L) != 1)
+        return luaL_error(L, "buttons.pressed(button) takes 1 argument");
 
     unsigned int buttons = luaL_checknumber(L, 1);
 
     lua_pushboolean(L, controls_pressed(buttons));
 
-	return 1;
+    return 1;
 }
 
-static int CTRL_held(lua_State *L)
-{
-    if(lua_gettop(L) != 1) 
-            return luaL_error(L, "buttons.held(button) takes 1 argument"); 
+static int CTRL_held(lua_State *L) {
+    if (lua_gettop(L) != 1)
+        return luaL_error(L, "buttons.held(button) takes 1 argument");
 
     unsigned int buttons = luaL_checknumber(L, 1);
 
     lua_pushboolean(L, controls_held(buttons));
-    
+
     return 1;
 }
 
-static int CTRL_released(lua_State *L)
-{
-    if(lua_gettop(L) != 1) 
-            return luaL_error(L, "buttons.released(button) takes 1 argument"); 
+static int CTRL_released(lua_State *L) {
+    if (lua_gettop(L) != 1)
+        return luaL_error(L, "buttons.released(button) takes 1 argument");
 
     unsigned int buttons = luaL_checknumber(L, 1);
 
     lua_pushboolean(L, controls_released(buttons));
-	return 1;
+    return 1;
 }
 
-static int CTRL_AnalogX(lua_State *L)
-{
-    if(lua_gettop(L) != 0)
+static int CTRL_AnalogX(lua_State *L) {
+    if (lua_gettop(L) != 0)
         return luaL_error(L, "buttons.Lx() takes no arguments");
 
-	lua_pushnumber(L, controls_AnalogX());
+    lua_pushnumber(L, controls_AnalogX());
 
-	return 1;
+    return 1;
 }
 
-static int CTRL_AnalogY(lua_State *L)
-{
-    if(lua_gettop(L) != 0)
+static int CTRL_AnalogY(lua_State *L) {
+    if (lua_gettop(L) != 0)
         return luaL_error(L, "buttons.Ly() takes no arguments");
 
-	lua_pushnumber(L, controls_AnalogY());
+    lua_pushnumber(L, controls_AnalogY());
 
-	return 1;
+    return 1;
 }
 
 static const luaL_Reg CTRL_methods[] =
@@ -119,8 +113,7 @@ static const luaL_Reg CTRL_methods[] =
     {0, 0}
 };
 
-int CTRL_init(lua_State *L)
-{
+int CTRL_init(lua_State *L) {
     controls_init();
 
     luaL_register(L, "buttons", CTRL_methods);
@@ -128,19 +121,19 @@ int CTRL_init(lua_State *L)
     lua_pushstring(L, "buttons");
     lua_gettable(L, LUA_GLOBALSINDEX);
 
-    Const("select",     PSP_CTRL_SELECT);
-    Const("home",       PSP_CTRL_HOME);
-    Const("start",      PSP_CTRL_START);
-    Const("up",         PSP_CTRL_UP);
-    Const("right",      PSP_CTRL_RIGHT);
-    Const("down",       PSP_CTRL_DOWN);
-    Const("left",       PSP_CTRL_LEFT);
-    Const("l",          PSP_CTRL_LTRIGGER);
-    Const("r",          PSP_CTRL_RTRIGGER);
-    Const("triangle",   PSP_CTRL_TRIANGLE);
-    Const("circle",     PSP_CTRL_CIRCLE);
-    Const("cross",      PSP_CTRL_CROSS);
-    Const("square",     PSP_CTRL_SQUARE);
+    Const("select", PSP_CTRL_SELECT);
+    Const("home", PSP_CTRL_HOME);
+    Const("start", PSP_CTRL_START);
+    Const("up", PSP_CTRL_UP);
+    Const("right", PSP_CTRL_RIGHT);
+    Const("down", PSP_CTRL_DOWN);
+    Const("left", PSP_CTRL_LEFT);
+    Const("l", PSP_CTRL_LTRIGGER);
+    Const("r", PSP_CTRL_RTRIGGER);
+    Const("triangle", PSP_CTRL_TRIANGLE);
+    Const("circle", PSP_CTRL_CIRCLE);
+    Const("cross", PSP_CTRL_CROSS);
+    Const("square", PSP_CTRL_SQUARE);
 
     return 0;
 }

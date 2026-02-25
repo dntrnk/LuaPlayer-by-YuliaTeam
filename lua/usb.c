@@ -46,31 +46,27 @@
 static int usbStarted = 0;
 static SceUID LPYT_USB[7];
 
-SceUID StartModule(const char *filename)
-{
+SceUID StartModule(const char *filename) {
     SceUID r = kuKernelLoadModule(filename, 0, 0);
-    if(r <= 0) return 0;
+    if (r <= 0) return 0;
 
     int status;
 
     int res = sceKernelStartModule(r, 0, 0, &status, 0);
 
-    if(res < 0)
-    {
+    if (res < 0) {
         return 0;
     }
 
     return (r);
 }
 
-static int UnloadModule(SceUID modid)
-{
+static int UnloadModule(SceUID modid) {
     int status;
 
     int res = sceKernelStopModule(modid, 0, 0, &status, 0);
 
-    if(res < 0)
-    {
+    if (res < 0) {
         return 0;
     }
 
@@ -79,30 +75,26 @@ static int UnloadModule(SceUID modid)
     return (res);
 }
 
-static int USB_kernelInit()
-{
+static int USB_kernelInit() {
     LPYT_USB[0] = StartModule("flash0:/kd/semawm.prx");
     if (LPYT_USB[0] < 0)
         return -1;
 
     LPYT_USB[1] = StartModule("flash0:/kd/usbstor.prx");
-    if (LPYT_USB[1] < 0)
-    {
+    if (LPYT_USB[1] < 0) {
         UnloadModule(LPYT_USB[0]);
         return -1;
     }
 
     LPYT_USB[2] = StartModule("flash0:/kd/usbstormgr.prx");
-    if (LPYT_USB[2] < 0)
-    {
+    if (LPYT_USB[2] < 0) {
         UnloadModule(LPYT_USB[0]);
         UnloadModule(LPYT_USB[1]);
         return -1;
     }
 
     LPYT_USB[3] = StartModule("flash0:/kd/usbstorms.prx");
-    if (LPYT_USB[3] < 0)
-    {
+    if (LPYT_USB[3] < 0) {
         UnloadModule(LPYT_USB[0]);
         UnloadModule(LPYT_USB[1]);
         UnloadModule(LPYT_USB[2]);
@@ -110,8 +102,7 @@ static int USB_kernelInit()
     }
 
     LPYT_USB[4] = StartModule("flash0:/kd/usbstorboot.prx");
-    if (LPYT_USB[4] < 0)
-    {
+    if (LPYT_USB[4] < 0) {
         UnloadModule(LPYT_USB[0]);
         UnloadModule(LPYT_USB[1]);
         UnloadModule(LPYT_USB[2]);
@@ -120,8 +111,7 @@ static int USB_kernelInit()
     }
 
     LPYT_USB[5] = StartModule("flash0:/kd/chkreg.prx");
-    if (LPYT_USB[5] < 0)
-    {
+    if (LPYT_USB[5] < 0) {
         UnloadModule(LPYT_USB[0]);
         UnloadModule(LPYT_USB[1]);
         UnloadModule(LPYT_USB[2]);
@@ -131,8 +121,7 @@ static int USB_kernelInit()
     }
 
     LPYT_USB[6] = StartModule("flash0:/kd/npdrm.prx");
-    if (LPYT_USB[6] < 0)
-    {
+    if (LPYT_USB[6] < 0) {
         UnloadModule(LPYT_USB[0]);
         UnloadModule(LPYT_USB[1]);
         UnloadModule(LPYT_USB[2]);
@@ -145,8 +134,7 @@ static int USB_kernelInit()
     return 0;
 }
 
-int USB_activate()
-{
+int USB_activate() {
     if (usbStarted)
         return 1;
 
@@ -163,8 +151,7 @@ int USB_activate()
     return 0;
 }
 
-int USB_deactivate()
-{
+int USB_deactivate() {
     if (!usbStarted)
         return -1;
 
@@ -184,13 +171,11 @@ int USB_deactivate()
     return 0;
 }
 
-int USB_getState()
-{
+int USB_getState() {
     return sceUsbGetState();
 }
 
-static int luaUSB_activate(lua_State *L)
-{
+static int luaUSB_activate(lua_State *L) {
     if (lua_gettop(L) != 0)
         return luaL_error(L, "USB.activate() takes no arguments");
 
@@ -199,8 +184,7 @@ static int luaUSB_activate(lua_State *L)
     return 1;
 }
 
-static int luaUSB_deactivate(lua_State *L)
-{
+static int luaUSB_deactivate(lua_State *L) {
     if (lua_gettop(L) != 0)
         return luaL_error(L, "USB.deactivate() takes no arguments");
 
@@ -209,8 +193,7 @@ static int luaUSB_deactivate(lua_State *L)
     return 1;
 }
 
-static int luaUSB_getState(lua_State *L)
-{
+static int luaUSB_getState(lua_State *L) {
     if (lua_gettop(L) != 0)
         return luaL_error(L, "USB.getState() takes no arguments");
 
@@ -226,8 +209,7 @@ static const luaL_Reg USB_methods[] = {
     {0, 0}
 };
 
-int USB_init(lua_State *L)
-{
+int USB_init(lua_State *L) {
     lua_getglobal(L, "System");
     lua_newtable(L);
     luaL_register(L, 0, USB_methods);
