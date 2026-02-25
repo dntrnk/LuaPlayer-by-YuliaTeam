@@ -38,11 +38,10 @@ LIBS = -lpng -ljpeg -lpsppower -lz -lpspgu -lm -lc -lFLAC -lvorbisidec -lpspaudi
        -lpspkubridge -lpspvram -lbz2 -lfreetype -lpspvaudio
 
 EXTRA_TARGETS = EBOOT.PBP
-#PSP_EBOOT_TITLE = LPYT PMP TEST
-PSP_EBOOT_TITLE = TTF Player for DNTRNKPORNO #LuaPlayerYT 0.5
-PSP_EBOOT_ICON = res/momo_ayase.png #res/icon_cassette-2.png
-PSP_EBOOT_SND0 = res/OXXXYMIRON_DNTRNK.at3 #res/fitgirl.at3
-PSP_EBOOT_PIC1 = res/DNTRNK_BG.png #res/image_14.png
+PSP_EBOOT_TITLE = LuaPlayerYT 0.5
+PSP_EBOOT_ICON = res/icon_cassette-2.png
+PSP_EBOOT_SND0 = res/fitgirl.at3
+PSP_EBOOT_PIC1 = res/image_14.png
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
