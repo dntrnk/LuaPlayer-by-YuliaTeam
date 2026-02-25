@@ -42,7 +42,7 @@ float vfpu_floorf(float x);
 float vfpu_fmodf(float x, float y);
 
 /* Разложение х на мантиссу и экспоненту */
-float vfpu_frexpf(float x, int* exp);
+float vfpu_frexpf(float x, int *exp);
 
 /* Умножение х на 2 в степени */
 float vfpu_ldexpf(float x, int exp);
@@ -60,7 +60,7 @@ float vfpu_maxf(float a, float b);
 float vfpu_minf(float a, float b);
 
 /* Разделение х на целую и дробную части */
-float vfpu_modff(float x, float* intpart);
+float vfpu_modff(float x, float *intpart);
 
 /* Возведение х в степень у */
 float vfpu_powf(float x, float y);

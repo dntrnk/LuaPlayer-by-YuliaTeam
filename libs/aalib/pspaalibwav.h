@@ -15,16 +15,16 @@
 #include "pspaalibcommon.h"
 
 bool GetPausedWav(int channel);
-int SetAutoloopWav(int channel,bool autoloop);
+int SetAutoloopWav(int channel, bool autoloop);
 int GetStopReasonWav(int channel);
 int PlayWav(int channel);
 int StopWav(int channel);
 int PauseWav(int channel);
-int SeekWav(int time,int channel);
+int SeekWav(int time, int channel);
 int RewindWav(int channel);
-int GetBufferWav(short* buf,int length,float amp,int channel);
-int LoadWav(char* filename,int channel,bool loadToRam);
+int GetBufferWav(short *buf, int length, float amp, int channel);
+int LoadWav(char *filename, int channel, bool loadToRam);
 int UnloadWav(int channel);
-int GetMetadataWav(int channel, AalibMetadata* metadata);
+int GetMetadataWav(int channel, AalibMetadata *metadata);
 
 #endif

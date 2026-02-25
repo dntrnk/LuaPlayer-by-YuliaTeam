@@ -19,30 +19,24 @@ typedef struct LPYTControls
 
 static LPYTControls pad;
 
-static void controls_AddInput(const unsigned int button)
-{
-    if((pad.input.Buttons & button) != 0)
-	{
-		pad.released &= ~button;
-		
-		if((pad.held & button) == 0)
-		{
-			pad.pressed |= button;
-			pad.held |= button;
-		}
-	}
-	else
-	{
-		if(pad.held & button)
-			pad.released |= button;
-		
-		pad.pressed &= ~button;
-		pad.held &= ~button;
-	}
+static void controls_AddInput(const unsigned int button) {
+    if ((pad.input.Buttons & button) != 0) {
+        pad.released &= ~button;
+
+        if ((pad.held & button) == 0) {
+            pad.pressed |= button;
+            pad.held |= button;
+        }
+    } else {
+        if (pad.held & button)
+            pad.released |= button;
+
+        pad.pressed &= ~button;
+        pad.held &= ~button;
+    }
 }
 
-void controls_read()
-{
+void controls_read() {
     sceCtrlPeekBufferPositive(&pad.input, 1);
 
     pad.pressed = 0;
@@ -69,10 +63,8 @@ void controls_read()
     controls_AddInput(PSP_CTRL_HOME);
 }
 
-int controls_pressed(const unsigned int button)
-{
-    if((pad.pressed & button) == button)
-	{	
+int controls_pressed(const unsigned int button) {
+    if ((pad.pressed & button) == button) {
         pad.pressed &= ~button;
         return 1;
     }
@@ -80,31 +72,26 @@ int controls_pressed(const unsigned int button)
     return 0;
 }
 
-int controls_held(const unsigned int button)
-{
+int controls_held(const unsigned int button) {
     return ((pad.held & button) == button);
 }
 
-int controls_released(const unsigned int button)
-{
+int controls_released(const unsigned int button) {
     if ((pad.released & button) == button)
         return 1;
 
     return 0;
 }
 
-int controls_AnalogX()
-{
+int controls_AnalogX() {
     return pad.stick.x;
 }
 
-int controls_AnalogY()
-{
+int controls_AnalogY() {
     return pad.stick.y;
 }
 
-void controls_init()
-{
+void controls_init() {
     memset(&pad, 0, sizeof(LPYTControls));
 
     sceCtrlSetSamplingCycle(0);

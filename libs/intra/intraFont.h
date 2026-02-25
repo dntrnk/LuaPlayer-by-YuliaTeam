@@ -23,9 +23,9 @@ extern "C" {
 #include <stdbool.h>
 #include FT_FREETYPE_H
 
-/** @defgroup intraFont Font Library
- *  @{
- */
+    /** @defgroup intraFont Font Library
+     *  @{
+     */
 
 #define INTRAFONT_ADVANCE_H        0x00000000 //default: advance horizontaly from one char to the next
 #define INTRAFONT_ADVANCE_V        0x00000100
@@ -34,7 +34,7 @@ extern "C" {
 #define INTRAFONT_ALIGN_RIGHT      0x00000400
 #define INTRAFONT_ALIGN_FULL       0x00000600 //full justify text to width set by intraFontSetTextWidth()
 #define INTRAFONT_SCROLL_LEFT      0x00002000 //in intraFontPrintColumn if text does not fit text is scrolled to the left 
-                                            //(requires redrawing at ~60 FPS with x position returned by previous call to intraFontPrintColumn())
+     //(requires redrawing at ~60 FPS with x position returned by previous call to intraFontPrintColumn())
 #define INTRAFONT_SCROLL_SEESAW    0x00002200 //in intraFontPrintColumn if text does not fit text is scrolled left and right
 #define INTRAFONT_SCROLL_RIGHT     0x00002400 //in intraFontPrintColumn if text does not fit text is scrolled to the right
 #define INTRAFONT_SCROLL_THROUGH   0x00002600 //in intraFontPrintColumn if text does not fit text is scrolled through (to the left)
@@ -87,274 +87,278 @@ extern "C" {
  *
  * @note This is used internally by ::intraFont and has no other relevance.
  */
-typedef struct {
-  unsigned short x;         //in pixels
-  unsigned short y;         //in pixels
-  unsigned char width;      //in pixels
-  unsigned char height;     //in pixels
-  short left;                //in pixels
-  short top;                 //in pixels
-  unsigned char flags;
-  //unsigned short shadowID;  //to look up in shadowmap
-  short advance;             //in quarterpixels
-  unsigned long ptr;        //offset 
-} Glyph;
+    typedef struct
+    {
+        unsigned short x;         //in pixels
+        unsigned short y;         //in pixels
+        unsigned char width;      //in pixels
+        unsigned char height;     //in pixels
+        short left;                //in pixels
+        short top;                 //in pixels
+        unsigned char flags;
+        //unsigned short shadowID;  //to look up in shadowmap
+        short advance;             //in quarterpixels
+        unsigned long ptr;        //offset 
+    } Glyph;
 
-typedef struct {
-  unsigned short x;         //in pixels
-  unsigned short y;         //in pixels
-  unsigned char flags;
-} GlyphBW;
+    typedef struct
+    {
+        unsigned short x;         //in pixels
+        unsigned short y;         //in pixels
+        unsigned char flags;
+    } GlyphBW;
 
-/**
- * A PGF_Header struct
- *
- * @note This is used internally by ::intraFont and has no other relevance.
- */
-typedef struct {
-  unsigned short header_start;
-  unsigned short header_len;
-  char pgf_id[4];
-  unsigned long revision;
-  unsigned long version;
-  unsigned long charmap_len;
-  unsigned long charptr_len;
-  unsigned long charmap_bpe;
-  unsigned long charptr_bpe;
-  unsigned char junk00[21];
-  unsigned char family[64];
-  unsigned char style[64];
-  unsigned char junk01[1];
-  unsigned short charmap_min;
-  unsigned short charmap_max;
-  unsigned char junk02[50];
-  unsigned long fixedsize[2];
-  unsigned char junk03[14];
-  unsigned char table1_len;
-  unsigned char table2_len;
-  unsigned char table3_len;
-  unsigned char advance_len;
-  unsigned char junk04[102];
-  unsigned long shadowmap_len;
-  unsigned long shadowmap_bpe;
-  unsigned char junk05[4];
-  unsigned long shadowscale[2];
-  //currently no need ;
-} PGF_Header;
+    /**
+     * A PGF_Header struct
+     *
+     * @note This is used internally by ::intraFont and has no other relevance.
+     */
+    typedef struct
+    {
+        unsigned short header_start;
+        unsigned short header_len;
+        char pgf_id[4];
+        unsigned long revision;
+        unsigned long version;
+        unsigned long charmap_len;
+        unsigned long charptr_len;
+        unsigned long charmap_bpe;
+        unsigned long charptr_bpe;
+        unsigned char junk00[21];
+        unsigned char family[64];
+        unsigned char style[64];
+        unsigned char junk01[1];
+        unsigned short charmap_min;
+        unsigned short charmap_max;
+        unsigned char junk02[50];
+        unsigned long fixedsize[2];
+        unsigned char junk03[14];
+        unsigned char table1_len;
+        unsigned char table2_len;
+        unsigned char table3_len;
+        unsigned char advance_len;
+        unsigned char junk04[102];
+        unsigned long shadowmap_len;
+        unsigned long shadowmap_bpe;
+        unsigned char junk05[4];
+        unsigned long shadowscale[2];
+        //currently no need ;
+    } PGF_Header;
 
-/**
- * A Font struct
- */
-typedef struct intraFont {
-  char* filename;
-  unsigned char fileType;          /**< FILETYPE_PGF or FILETYPE_BWFON */
-  unsigned char* fontdata;
-  
-  unsigned char* texture;          /**< The bitmap data */
-  unsigned int texWidth;           /**< Texture size (power2) */
-  unsigned int texHeight;          /**< Texture height (power2) */  
-  unsigned short texX;
-  unsigned short texY;
-  unsigned short texYSize;
-  
-  unsigned short n_chars;
-  char advancex;                   /**< in quarterpixels */
-  char advancey;                   /**< in quarterpixels */
-  unsigned char charmap_compr_len; /**< length of compression info */
-  unsigned short* charmap_compr;   /**< Compression info on compressed charmap */  
-  unsigned short* charmap;         /**< Character map */  
-  Glyph* glyph;                    /**< Character glyphs */
-  GlyphBW* glyphBW;
-    
-  //unsigned short n_shadows;
-  //unsigned char shadowscale;       /**< shadows in pgf file (width, height, left and top properties as well) are scaled by factor of (shadowscale>>6) */  
-  //Glyph* shadowGlyph;              /**<  Shadow glyph(s) */  
-  
-  float size;
-  unsigned int color;
-  //unsigned int shadowColor;
-  float angle, Rsin, Rcos;                /**< For rotation */
-  short isRotated;
-  unsigned int options;
+    /**
+     * A Font struct
+     */
+    typedef struct intraFont
+    {
+        char *filename;
+        unsigned char fileType;          /**< FILETYPE_PGF or FILETYPE_BWFON */
+        unsigned char *fontdata;
 
-  struct intraFont* altFont;
-} intraFont;
+        unsigned char *texture;          /**< The bitmap data */
+        unsigned int texWidth;           /**< Texture size (power2) */
+        unsigned int texHeight;          /**< Texture height (power2) */
+        unsigned short texX;
+        unsigned short texY;
+        unsigned short texYSize;
+
+        unsigned short n_chars;
+        char advancex;                   /**< in quarterpixels */
+        char advancey;                   /**< in quarterpixels */
+        unsigned char charmap_compr_len; /**< length of compression info */
+        unsigned short *charmap_compr;   /**< Compression info on compressed charmap */
+        unsigned short *charmap;         /**< Character map */
+        Glyph *glyph;                    /**< Character glyphs */
+        GlyphBW *glyphBW;
+
+        //unsigned short n_shadows;
+        //unsigned char shadowscale;       /**< shadows in pgf file (width, height, left and top properties as well) are scaled by factor of (shadowscale>>6) */  
+        //Glyph* shadowGlyph;              /**<  Shadow glyph(s) */  
+
+        float size;
+        unsigned int color;
+        //unsigned int shadowColor;
+        float angle, Rsin, Rcos;                /**< For rotation */
+        short isRotated;
+        unsigned int options;
+
+        struct intraFont *altFont;
+    } intraFont;
 
 
-/**
- * Initialise the Font library
- *
- * @returns 1 on success.
- */
-int intraFontInit(void);
+    /**
+     * Initialise the Font library
+     *
+     * @returns 1 on success.
+     */
+    int intraFontInit(void);
 
-/**
- * Shutdown the Font library
- */
-void intraFontShutdown(void);
+    /**
+     * Shutdown the Font library
+     */
+    void intraFontShutdown(void);
 
-/**
- * Load a pgf font.
- *
- * @param filename - Path to the font
- *
- * @param  options - INTRAFONT_XXX flags as defined above including flags related to CACHE (ored together)
- *
- * @returns A ::intraFont struct
- */
-intraFont* intraFontLoad(const char *filename,unsigned int options);
+    /**
+     * Load a pgf font.
+     *
+     * @param filename - Path to the font
+     *
+     * @param  options - INTRAFONT_XXX flags as defined above including flags related to CACHE (ored together)
+     *
+     * @returns A ::intraFont struct
+     */
+    intraFont *intraFontLoad(const char *filename, unsigned int options);
 
-intraFont* intraFontLoadTTF(const char *filename, unsigned int options, float size);
+    intraFont *intraFontLoadTTF(const char *filename, unsigned int options, float size);
 
-/**
- * Free the specified font.
- *
- * @param font - A valid ::intraFont
- */
-void intraFontUnload(intraFont *font);
+    /**
+     * Free the specified font.
+     *
+     * @param font - A valid ::intraFont
+     */
+    void intraFontUnload(intraFont *font);
 
-/**
- * Activate the specified font.
- *
- * @param font - A valid ::intraFont
- * 
- * @param linear - smoth letters
- */
-void intraFontActivate(intraFont *font, bool linear);
+    /**
+     * Activate the specified font.
+     *
+     * @param font - A valid ::intraFont
+     *
+     * @param linear - smoth letters
+     */
+    void intraFontActivate(intraFont *font, bool linear);
 
-/**
- * Set font style
- *
- * @param font - A valid ::intraFont
- *
- * @param size - Text size
- *
- * @param color - Text color
- *
- * @param angle - Text angle (in degrees)
- *
- * @param shadowColor - Shadow color (use 0 for no shadow)
- *
- * @param options - INTRAFONT_XXX flags as defined above except flags related to CACHE (ored together)
- */
-void intraFontSetStyle(intraFont *font, float size, unsigned int color, unsigned int shadowColor, float angle, unsigned int options);
+    /**
+     * Set font style
+     *
+     * @param font - A valid ::intraFont
+     *
+     * @param size - Text size
+     *
+     * @param color - Text color
+     *
+     * @param angle - Text angle (in degrees)
+     *
+     * @param shadowColor - Shadow color (use 0 for no shadow)
+     *
+     * @param options - INTRAFONT_XXX flags as defined above except flags related to CACHE (ored together)
+     */
+    void intraFontSetStyle(intraFont *font, float size, unsigned int color, unsigned int shadowColor, float angle, unsigned int options);
 
-/**
- * Set type of string encoding to be used in intraFontPrint[f]
- *
- * @param font - A valid ::intraFont
- *
- * @param options - INTRAFONT_STRING_XXX flags as defined above except flags related to CACHE (ored together)
- */
-void intraFontSetEncoding(intraFont *font, unsigned int options);
+    /**
+     * Set type of string encoding to be used in intraFontPrint[f]
+     *
+     * @param font - A valid ::intraFont
+     *
+     * @param options - INTRAFONT_STRING_XXX flags as defined above except flags related to CACHE (ored together)
+     */
+    void intraFontSetEncoding(intraFont *font, unsigned int options);
 
-/**
- * Set alternative font
- *
- * @param font - A valid ::intraFont
- *
- * @param altFont - A valid ::intraFont that's to be used if font does not contain a character
- */
-void intraFontSetAltFont(intraFont *font, intraFont *altFont);
+    /**
+     * Set alternative font
+     *
+     * @param font - A valid ::intraFont
+     *
+     * @param altFont - A valid ::intraFont that's to be used if font does not contain a character
+     */
+    void intraFontSetAltFont(intraFont *font, intraFont *altFont);
 
-/**
- * Draw UCS-2 encoded text along the baseline starting at x, y.
- *
- * @param font - A valid ::intraFont
- *
- * @param x - X position on screen
- *
- * @param y - Y position on screen
- *
- * @param width - column width for automatic line breaking (intraFontPrintColumn... versions only)
- *
- * @param text - UCS-2 encoded text to draw
- *
- * @param length - char length of text to draw (...Ex versions only)
- *
- * @returns The x position after the last char
- */
-float intraFontPrintUCS2        (intraFont *font, float x, float y, const unsigned short *text);
-float intraFontPrintUCS2Ex      (intraFont *font, float x, float y, const unsigned short *text, int length);
-float intraFontPrintColumnUCS2  (intraFont *font, float x, float y, float width, const unsigned short *text);
-float intraFontPrintColumnUCS2Ex(intraFont *font, float x, float y, float width, const unsigned short *text, int length);
+    /**
+     * Draw UCS-2 encoded text along the baseline starting at x, y.
+     *
+     * @param font - A valid ::intraFont
+     *
+     * @param x - X position on screen
+     *
+     * @param y - Y position on screen
+     *
+     * @param width - column width for automatic line breaking (intraFontPrintColumn... versions only)
+     *
+     * @param text - UCS-2 encoded text to draw
+     *
+     * @param length - char length of text to draw (...Ex versions only)
+     *
+     * @returns The x position after the last char
+     */
+    float intraFontPrintUCS2(intraFont *font, float x, float y, const unsigned short *text);
+    float intraFontPrintUCS2Ex(intraFont *font, float x, float y, const unsigned short *text, int length);
+    float intraFontPrintColumnUCS2(intraFont *font, float x, float y, float width, const unsigned short *text);
+    float intraFontPrintColumnUCS2Ex(intraFont *font, float x, float y, float width, const unsigned short *text, int length);
 
-/**
- * Draw text along the baseline starting at x, y.
- *
- * @param font - A valid ::intraFont
- *
- * @param x - X position on screen
- *
- * @param y - Y position on screen
- *
- * @param width - column width for automatic line breaking (intraFontPrintColumn... versions only)
- *
- * @param text - Text to draw (ASCII & extended ASCII, S-JIS or UTF-8 encoded)
- *
- * @param length - char length of text to draw (...Ex versions only)
- *
- * @returns The x position after the last char
- */
-float intraFontPrint        (intraFont *font, float x, float y, const char *text);
-float intraFontPrintEx      (intraFont *font, float x, float y, const char *text, int length);
-float intraFontPrintColumn  (intraFont *font, float x, float y, float width, const char *text);
-float intraFontPrintColumnEx(intraFont *font, float x, float y, float width, const char *text, int length);
+    /**
+     * Draw text along the baseline starting at x, y.
+     *
+     * @param font - A valid ::intraFont
+     *
+     * @param x - X position on screen
+     *
+     * @param y - Y position on screen
+     *
+     * @param width - column width for automatic line breaking (intraFontPrintColumn... versions only)
+     *
+     * @param text - Text to draw (ASCII & extended ASCII, S-JIS or UTF-8 encoded)
+     *
+     * @param length - char length of text to draw (...Ex versions only)
+     *
+     * @returns The x position after the last char
+     */
+    float intraFontPrint(intraFont *font, float x, float y, const char *text);
+    float intraFontPrintEx(intraFont *font, float x, float y, const char *text, int length);
+    float intraFontPrintColumn(intraFont *font, float x, float y, float width, const char *text);
+    float intraFontPrintColumnEx(intraFont *font, float x, float y, float width, const char *text, int length);
 
-/**
- * Draw text along the baseline starting at x, y (with formatting).
- *
- * @param font - A valid ::intraFont
- *
- * @param x - X position on screen
- *
- * @param y - Y position on screen
- *
- * @param width - column width for automatic line breaking (intraFontPrintfColumn... versions only)
- *
- * @param text - Text to draw (ASCII & extended ASCII, S-JIS or UTF-8 encoded)
- *
- * @param length - char length of text to draw (...Ex versions only)
- *
- * @returns The x position after the last char
- */
-float intraFontPrintf        (intraFont *font, float x, float y, const char *text, ...);
-//the following functions might be implemented in a future version of intraFont
-//float intraFontPrintfEx      (intraFont *font, float x, float y, const char *text, int length, ...);
-//float intraFontPrintfColumn  (intraFont *font, float x, float y, float width, const char *text, ...);
-//float intraFontPrintfColumnEx(intraFont *font, float x, float y, float width, const char *text, int length, ...);
+    /**
+     * Draw text along the baseline starting at x, y (with formatting).
+     *
+     * @param font - A valid ::intraFont
+     *
+     * @param x - X position on screen
+     *
+     * @param y - Y position on screen
+     *
+     * @param width - column width for automatic line breaking (intraFontPrintfColumn... versions only)
+     *
+     * @param text - Text to draw (ASCII & extended ASCII, S-JIS or UTF-8 encoded)
+     *
+     * @param length - char length of text to draw (...Ex versions only)
+     *
+     * @returns The x position after the last char
+     */
+    float intraFontPrintf(intraFont *font, float x, float y, const char *text, ...);
+    //the following functions might be implemented in a future version of intraFont
+    //float intraFontPrintfEx      (intraFont *font, float x, float y, const char *text, int length, ...);
+    //float intraFontPrintfColumn  (intraFont *font, float x, float y, float width, const char *text, ...);
+    //float intraFontPrintfColumnEx(intraFont *font, float x, float y, float width, const char *text, int length, ...);
 
-/**
- * Measure a length of text if it were to be drawn
- *
- * @param font - A valid ::intraFont
- *
- * @param text - Text to measure (ASCII & extended ASCII, S-JIS or UTF-8 encoded)
- *
- * @param length - char length of text to measure (...Ex version only)
- *
- * @returns The total width of the text (until the first newline char)
- */
-float intraFontMeasureText  (intraFont *font, const char *text);
-float intraFontMeasureTextEx(intraFont *font, const char *text, int length);
+    /**
+     * Measure a length of text if it were to be drawn
+     *
+     * @param font - A valid ::intraFont
+     *
+     * @param text - Text to measure (ASCII & extended ASCII, S-JIS or UTF-8 encoded)
+     *
+     * @param length - char length of text to measure (...Ex version only)
+     *
+     * @returns The total width of the text (until the first newline char)
+     */
+    float intraFontMeasureText(intraFont *font, const char *text);
+    float intraFontMeasureTextEx(intraFont *font, const char *text, int length);
 
-/**
- * Measure a length of UCS-2 encoded text if it were to be drawn
- *
- * @param font - A valid ::intraFont
- *
- * @param text - UCS-2 encoded text to measure
- *
- * @param length - char length of text to measure (...Ex version only)
- *
- * @returns The total width of the text (until the first newline char)
- */
-float intraFontMeasureTextUCS2  (intraFont *font, const unsigned short *text); 
-float intraFontMeasureTextUCS2Ex(intraFont *font, const unsigned short *text, int length);
+    /**
+     * Measure a length of UCS-2 encoded text if it were to be drawn
+     *
+     * @param font - A valid ::intraFont
+     *
+     * @param text - UCS-2 encoded text to measure
+     *
+     * @param length - char length of text to measure (...Ex version only)
+     *
+     * @returns The total width of the text (until the first newline char)
+     */
+    float intraFontMeasureTextUCS2(intraFont *font, const unsigned short *text);
+    float intraFontMeasureTextUCS2Ex(intraFont *font, const unsigned short *text, int length);
 
-int intraFontTextHeight(intraFont *font);
+    int intraFontTextHeight(intraFont *font);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }

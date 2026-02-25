@@ -10,7 +10,8 @@
 
 #include "pspaalibflac.h"
 
-typedef struct {
+typedef struct
+{
     FLAC__StreamDecoder *decoder;
     short *pcm_buffer;
     int buffer_size;
@@ -24,7 +25,7 @@ typedef struct {
     int stopReason;
 } FlacFileInfo;
 
-static FlacFileInfo streamsFlac[4] = {0};
+static FlacFileInfo streamsFlac[4] = { 0 };
 
 static void log_flac_info(int channel) {
     printf("\n=== FLAC Channel %d Info ===\n", channel);
@@ -52,9 +53,8 @@ static FLAC__StreamDecoderWriteStatus write_callback(
     const FLAC__StreamDecoder *decoder,
     const FLAC__Frame *frame,
     const FLAC__int32 *const buffer[],
-    void *client_data) 
-{
-    int channel = *(int*)client_data;
+    void *client_data) {
+    int channel = *(int *)client_data;
     printf("\n[WriteCallback] Channel %d - New frame\n", channel);
     printf("  Blocksize: %ld\n", frame->header.blocksize);
     printf("  Channels: %ld\n", frame->header.channels);
@@ -75,7 +75,7 @@ static FLAC__StreamDecoderWriteStatus write_callback(
         if (streamsFlac[channel].pcm_buffer) {
             free(streamsFlac[channel].pcm_buffer);
         }
-        streamsFlac[channel].pcm_buffer = (short*)malloc(samples * 2 * sizeof(short));
+        streamsFlac[channel].pcm_buffer = (short *)malloc(samples * 2 * sizeof(short));
         if (!streamsFlac[channel].pcm_buffer) {
             printf("[WriteCallback] ERROR: Failed to allocate PCM buffer\n");
             return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
@@ -88,18 +88,18 @@ static FLAC__StreamDecoderWriteStatus write_callback(
     for (int i = 0; i < samples; i++) {
         // Пример лога первых 5 сэмплов
         if (i < 5) {
-            printf("  Sample %d: L=%ld, R=%ld\n", i, buffer[0][i], 
-                   frame->header.channels > 1 ? buffer[1][i] : buffer[0][i]);
+            printf("  Sample %d: L=%ld, R=%ld\n", i, buffer[0][i],
+                frame->header.channels > 1 ? buffer[1][i] : buffer[0][i]);
         }
-        
+
         // Левый канал
-        streamsFlac[channel].pcm_buffer[i*2] = (short)(buffer[0][i] >> 8);
-        
+        streamsFlac[channel].pcm_buffer[i * 2] = (short)(buffer[0][i] >> 8);
+
         // Правый канал
         if (frame->header.channels > 1) {
-            streamsFlac[channel].pcm_buffer[i*2+1] = (short)(buffer[1][i] >> 8);
+            streamsFlac[channel].pcm_buffer[i * 2 + 1] = (short)(buffer[1][i] >> 8);
         } else {
-            streamsFlac[channel].pcm_buffer[i*2+1] = streamsFlac[channel].pcm_buffer[i*2];
+            streamsFlac[channel].pcm_buffer[i * 2 + 1] = streamsFlac[channel].pcm_buffer[i * 2];
         }
     }
 
@@ -113,11 +113,10 @@ static FLAC__StreamDecoderWriteStatus write_callback(
 static void metadata_callback(
     const FLAC__StreamDecoder *decoder,
     const FLAC__StreamMetadata *metadata,
-    void *client_data) 
-{
-    int channel = *(int*)client_data;
+    void *client_data) {
+    int channel = *(int *)client_data;
     printf("\n[MetadataCallback] Channel %d\n", channel);
-    
+
     if (metadata->type == FLAC__METADATA_TYPE_STREAMINFO) {
         printf("  STREAMINFO metadata:\n");
         printf("    Sample Rate: %ld Hz\n", metadata->data.stream_info.sample_rate);
@@ -125,14 +124,12 @@ static void metadata_callback(
         printf("    Bits per Sample: %ld\n", metadata->data.stream_info.bits_per_sample);
         printf("    Total Samples: %llu\n", metadata->data.stream_info.total_samples);
         printf("    Max Blocksize: %ld\n", metadata->data.stream_info.max_blocksize);
-        
+
         streamsFlac[channel].sample_rate = metadata->data.stream_info.sample_rate;
         streamsFlac[channel].channels = metadata->data.stream_info.channels;
-    }
-    else if (metadata->type == FLAC__METADATA_TYPE_VORBIS_COMMENT) {
+    } else if (metadata->type == FLAC__METADATA_TYPE_VORBIS_COMMENT) {
         printf("  VORBISCOMMENT metadata (ignored)\n");
-    }
-    else {
+    } else {
         printf("  Other metadata type: %d (ignored)\n", metadata->type);
     }
 }
@@ -140,11 +137,10 @@ static void metadata_callback(
 static void error_callback(
     const FLAC__StreamDecoder *decoder,
     FLAC__StreamDecoderErrorStatus status,
-    void *client_data) 
-{
-    int channel = *(int*)client_data;
-    printf("\n[ErrorCallback] Channel %d - Error: %s\n", 
-           channel, FLAC__StreamDecoderErrorStatusString[status]);
+    void *client_data) {
+    int channel = *(int *)client_data;
+    printf("\n[ErrorCallback] Channel %d - Error: %s\n",
+        channel, FLAC__StreamDecoderErrorStatusString[status]);
 }
 
 bool GetPausedFlac(int channel) {
@@ -180,7 +176,7 @@ int GetStopReasonFlac(int channel) {
 
 int PlayFlac(int channel) {
     printf("\n[PlayFlac] Starting playback on channel %d\n", channel);
-    
+
     if (channel < 0 || channel > 3) {
         printf("[PlayFlac] ERROR: Invalid channel %d\n", channel);
         return PSPAALIB_ERROR_FLAC_INVALID_CHANNEL;
@@ -223,11 +219,11 @@ int StopFlac(int channel) {
     if (!streamsFlac[channel].initialized) {
         return PSPAALIB_ERROR_FLAC_UNINITIALIZED_CHANNEL;
     }
-    
+
     RewindFlac(channel);
     streamsFlac[channel].paused = true;
     streamsFlac[channel].stopReason = PSPAALIB_STOP_ON_REQUEST;
-    
+
     return PSPAALIB_SUCCESS;
 }
 
@@ -238,10 +234,10 @@ int PauseFlac(int channel) {
     if (!streamsFlac[channel].initialized) {
         return PSPAALIB_ERROR_FLAC_UNINITIALIZED_CHANNEL;
     }
-    
+
     streamsFlac[channel].paused = !streamsFlac[channel].paused;
     streamsFlac[channel].stopReason = PSPAALIB_STOP_NOT_STOPPED;
-    
+
     return PSPAALIB_SUCCESS;
 }
 
@@ -252,21 +248,21 @@ int RewindFlac(int channel) {
     if (!streamsFlac[channel].initialized) {
         return PSPAALIB_ERROR_FLAC_UNINITIALIZED_CHANNEL;
     }
-    
+
     if (!FLAC__stream_decoder_seek_absolute(streamsFlac[channel].decoder, 0)) {
         FLAC__stream_decoder_reset(streamsFlac[channel].decoder);
         FLAC__stream_decoder_process_until_end_of_metadata(streamsFlac[channel].decoder);
     }
-    
+
     streamsFlac[channel].buffer_pos = 0;
     streamsFlac[channel].buffer_filled = 0;
-    
+
     return PSPAALIB_SUCCESS;
 }
 
-int GetBufferFlac(short* buf, int length, float amp, int channel) {
+int GetBufferFlac(short *buf, int length, float amp, int channel) {
     printf("\n[GetBuffer] Requested %d samples from channel %d (amp=%.2f)\n", length, channel, amp);
-    
+
     if (channel < 0 || channel > 3) {
         printf("[GetBuffer] ERROR: Invalid channel %d\n", channel);
         memset(buf, 0, length * 2 * sizeof(short));
@@ -305,11 +301,11 @@ int GetBufferFlac(short* buf, int length, float amp, int channel) {
         }
 
         int samples_available = streamsFlac[channel].buffer_filled - streamsFlac[channel].buffer_pos;
-        int samples_to_copy = (samples_available < (length - samples_copied)) ? 
-                            samples_available : (length - samples_copied);
+        int samples_to_copy = (samples_available < (length - samples_copied)) ?
+            samples_available : (length - samples_copied);
 
-        printf("[GetBuffer] Copying %d samples (pos=%d, filled=%d)\n", 
-               samples_to_copy, streamsFlac[channel].buffer_pos, streamsFlac[channel].buffer_filled);
+        printf("[GetBuffer] Copying %d samples (pos=%d, filled=%d)\n",
+            samples_to_copy, streamsFlac[channel].buffer_pos, streamsFlac[channel].buffer_filled);
 
         for (int i = 0; i < samples_to_copy * 2; i++) {
             buf[samples_copied * 2 + i] = (short)(streamsFlac[channel].pcm_buffer[streamsFlac[channel].buffer_pos * 2 + i] * amp);
@@ -325,7 +321,7 @@ int GetBufferFlac(short* buf, int length, float amp, int channel) {
 
 int LoadFlac(char *filename, int channel) {
     printf("\n[LoadFlac] Starting to load FLAC file '%s' on channel %d\n", filename, channel);
-    
+
     if (channel < 0 || channel > 3) {
         printf("[LoadFlac] ERROR: Invalid channel %d\n", channel);
         return PSPAALIB_ERROR_FLAC_INVALID_CHANNEL;
@@ -348,7 +344,7 @@ int LoadFlac(char *filename, int channel) {
 
     printf("[LoadFlac] Initializing file decoder...\n");
     FLAC__StreamDecoderInitStatus init_status = FLAC__stream_decoder_init_file(
-        streamsFlac[channel].decoder, filename, 
+        streamsFlac[channel].decoder, filename,
         write_callback, metadata_callback, error_callback, &channel);
 
     if (init_status != FLAC__STREAM_DECODER_INIT_STATUS_OK) {
@@ -388,13 +384,13 @@ int LoadFlac(char *filename, int channel) {
 
     printf("[LoadFlac] Successfully loaded FLAC file\n");
     log_flac_info(channel);
-    
+
     return PSPAALIB_SUCCESS;
 }
 
 int UnloadFlac(int channel) {
     printf("\n[UnloadFlac] Unloading channel %d\n", channel);
-    
+
     if (channel < 0 || channel > 3) {
         printf("[UnloadFlac] ERROR: Invalid channel %d\n", channel);
         return PSPAALIB_ERROR_FLAC_INVALID_CHANNEL;
@@ -420,7 +416,7 @@ int UnloadFlac(int channel) {
 
     printf("[UnloadFlac] Resetting channel state...\n");
     memset(&streamsFlac[channel], 0, sizeof(FlacFileInfo));
-    
+
     printf("[UnloadFlac] Channel %d unloaded\n", channel);
     return PSPAALIB_SUCCESS;
 }

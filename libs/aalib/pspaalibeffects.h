@@ -16,9 +16,9 @@
 
 #define sgn(a) ((a>0)?(1):(-1))
 
-void GetBufferSpeedEffect(short* dest,short* src,int length,float speed,bool mix);
-AalibVolume GetVolumes(ScePspFVector2 sourcePosition,ScePspFVector2 observerPosition,ScePspFVector2 observerFront);
-float GetDopplerPlaySpeed(ScePspFVector2 sourcePosition,ScePspFVector2 sourceVelocity,ScePspFVector2 observerPosition,ScePspFVector2 observerVelocity);
-float GetStrengthByPosition(ScePspFVector2 sourcePosition,ScePspFVector2 observerPosition);
+void GetBufferSpeedEffect(short *dest, short *src, int length, float speed, bool mix);
+AalibVolume GetVolumes(ScePspFVector2 sourcePosition, ScePspFVector2 observerPosition, ScePspFVector2 observerFront);
+float GetDopplerPlaySpeed(ScePspFVector2 sourcePosition, ScePspFVector2 sourceVelocity, ScePspFVector2 observerPosition, ScePspFVector2 observerVelocity);
+float GetStrengthByPosition(ScePspFVector2 sourcePosition, ScePspFVector2 observerPosition);
 
 #endif

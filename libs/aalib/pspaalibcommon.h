@@ -28,7 +28,7 @@
 //#include <vorbis/vorbisfile.h>
 
 #ifndef bool
-    #define bool unsigned char
+#define bool unsigned char
 #endif
 
 #define FALSE 0
@@ -164,11 +164,12 @@
 
 typedef struct
 {
-	float left;
-	float right;
+    float left;
+    float right;
 } AalibVolume;
 
-typedef struct {
+typedef struct
+{
     char title[256];
     char artist[256];
     char album[256];
@@ -176,7 +177,7 @@ typedef struct {
     char genre[128];
     char comment[512];
     int has_cover;
-	g2dImage *cover;
+    g2dImage *cover;
 } AalibMetadata;
 
 #define PSPAALIB_METADATA_NONE 0
@@ -192,6 +193,6 @@ typedef struct {
 
 #define PSSPAALIB_MAX_COVER_SIZE 128
 
-int ConvertStringToUTF8(char* str, int max_length);
+int ConvertStringToUTF8(char *str, int max_length);
 
 #endif

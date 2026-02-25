@@ -21,8 +21,8 @@ int PlayFlac(int channel);
 int StopFlac(int channel);
 int PauseFlac(int channel);
 int RewindFlac(int channel);
-int GetBufferFlac(short* buf, int length, float amp, int channel);
-int LoadFlac(char* filename, int channel);
+int GetBufferFlac(short *buf, int length, float amp, int channel);
+int LoadFlac(char *filename, int channel);
 int UnloadFlac(int channel);
 
 #endif

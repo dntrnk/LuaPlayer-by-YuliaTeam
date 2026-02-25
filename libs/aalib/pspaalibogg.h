@@ -15,16 +15,16 @@
 #include "pspaalibcommon.h"
 
 bool GetPausedOgg(int channel);
-int SetAutoloopOgg(int channel,bool autoloop);
+int SetAutoloopOgg(int channel, bool autoloop);
 int GetStopReasonOgg(int channel);
 int PlayOgg(int channel);
 int StopOgg(int channel);
 int PauseOgg(int channel);
 int RewindOgg(int channel);
-int SeekOgg(int channel,int time);
-int GetBufferOgg(short* buf,int length,float amp,int channel);
-int LoadOgg(char* filename,int channel,bool loadToRam);
+int SeekOgg(int channel, int time);
+int GetBufferOgg(short *buf, int length, float amp, int channel);
+int LoadOgg(char *filename, int channel, bool loadToRam);
 int UnloadOgg(int channel);
-int GetMetadataOgg(int channel, AalibMetadata* metadata);
+int GetMetadataOgg(int channel, AalibMetadata *metadata);
 
 #endif

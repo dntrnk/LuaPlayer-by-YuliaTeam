@@ -54,7 +54,7 @@ int AalibIsFree(int channel);
 //		Returns 0 on success,>0 on error.
 ////////////////////////////////////////////////
 
-int AalibSetAmplification(int channel,float amplificationValue);
+int AalibSetAmplification(int channel, float amplificationValue);
 
 
 ////////////////////////////////////////////////
@@ -68,7 +68,7 @@ int AalibSetAmplification(int channel,float amplificationValue);
 //		Returns 0 on success,>0 on error.
 ////////////////////////////////////////////////
 
-int AalibSetVolume(int channel,AalibVolume volume);
+int AalibSetVolume(int channel, AalibVolume volume);
 
 
 ////////////////////////////////////////////////
@@ -81,7 +81,7 @@ int AalibSetVolume(int channel,AalibVolume volume);
 //		Returns 0 on success,>0 on error.
 ////////////////////////////////////////////////
 
-int AalibSetPlaySpeed(int channel,float playSpeed);
+int AalibSetPlaySpeed(int channel, float playSpeed);
 
 
 ////////////////////////////////////////////////
@@ -93,7 +93,7 @@ int AalibSetPlaySpeed(int channel,float playSpeed);
 //		Returns 0 on success,>0 on error.
 ////////////////////////////////////////////////
 
-int AalibSetPosition(int channel,ScePspFVector2 position);
+int AalibSetPosition(int channel, ScePspFVector2 position);
 
 
 ////////////////////////////////////////////////
@@ -106,7 +106,7 @@ int AalibSetPosition(int channel,ScePspFVector2 position);
 //		Returns 0 on success,>0 on error.
 ////////////////////////////////////////////////
 
-int AalibSetVelocity(int channel,ScePspFVector2 velocity);
+int AalibSetVelocity(int channel, ScePspFVector2 velocity);
 
 
 ////////////////////////////////////////////////
@@ -155,7 +155,7 @@ int AalibSetObserverFront(ScePspFVector2 front);
 //		Returns 0 on success,>0 on error.
 ////////////////////////////////////////////////
 
-int AalibEnable(int channel,int effect);
+int AalibEnable(int channel, int effect);
 
 
 ////////////////////////////////////////////////
@@ -167,7 +167,7 @@ int AalibEnable(int channel,int effect);
 //		Returns 0 on success,>0 on error.
 ////////////////////////////////////////////////
 
-int AalibDisable(int channel,int effect);
+int AalibDisable(int channel, int effect);
 
 
 ////////////////////////////////////////////////
@@ -191,7 +191,7 @@ int AalibInit();
 //		Returns 0 on success,>0 on error.
 ////////////////////////////////////////////////
 
-int AalibLoad(char* filename,int channel,bool loadToRam);
+int AalibLoad(char *filename, int channel, bool loadToRam);
 
 
 ////////////////////////////////////////////////
@@ -266,7 +266,7 @@ int AalibRewind(int channel);
 //		Returns 0 on success,>0 on error.
 ////////////////////////////////////////////////
 
-int AalibSetAutoloop(int channel,bool autoloop);
+int AalibSetAutoloop(int channel, bool autoloop);
 
 
 ////////////////////////////////////////////////
