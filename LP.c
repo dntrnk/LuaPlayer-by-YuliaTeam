@@ -55,7 +55,9 @@
 #include "lua/usb.h"
 #include "lua/vfpu_math.h"
 
-PSP_MODULE_INFO("Lua Player YT", 0, 1, 0);
+#define LPYT_MAJOR 0
+#define LPYT_MINOR 5
+PSP_MODULE_INFO("LuaPlayerYT", 0, LPYT_MAJOR, LPYT_MINOR);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
 int sce_newlib_heap_kb_size = (-1024);
 
