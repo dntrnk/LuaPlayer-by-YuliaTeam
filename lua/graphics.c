@@ -961,7 +961,7 @@ static int G2D_drawCube(lua_State *L) {
 
 static int G2D_drawCircleOnTex(lua_State *L) {
 
-    g2dImage *tex = *toG2D(L, 1);
+    g2dImage *tex = *toG2D(L, 1); 
     int x = luaL_checknumber(L, 2);
     int y = luaL_checknumber(L, 3);
     int r = luaL_checknumber(L, 4);
@@ -971,6 +971,27 @@ static int G2D_drawCircleOnTex(lua_State *L) {
     return 0;
 }
 
+static int G2D_setCamera(lua_State *L) {
+    int args = lua_gettop(L);
+    if (args != 1 && args != 3)
+        return luaL_error(L, "G2D_setCamera(use, [x], [y]) takes 1 or 3 arguments");
+
+    g2dSetUseCamera(lua_toboolean(L, 1) != 0);
+
+    if (args >= 3) {
+        g2dSetCameraXY(luaL_checkint(L, 2), luaL_checkint(L, 3));
+    }
+
+    return 0;
+}
+
+static int G2D_getCamera(lua_State *L) {
+    lua_pushnumber(L, g2dGetCameraX());
+    lua_pushnumber(L, g2dGetCameraY());
+
+    return 2;
+}
+
 static const luaL_Reg GFX_methods[] = {
     {"clear",        G2D_clear},
     {"flip",         G2D_flip},
@@ -978,6 +999,8 @@ static const luaL_Reg GFX_methods[] = {
     {"drawLine",     G2D_drawLine},
     {"drawCircle",   G2D_drawCircle},
     {"drawTriangle", G2D_drawTriangle},
+    {"setCamera",    G2D_setCamera},
+    {"getCamera",    G2D_getCamera},
     //{"drawCube",     G2D_drawCube},
     {0, 0}
 };

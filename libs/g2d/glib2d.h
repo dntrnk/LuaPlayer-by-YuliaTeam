@@ -897,6 +897,13 @@ G2D_RGBA((int)(luminance)*G2D_GET_R(color)/255, \
 
     g2dColor get_pixel(g2dImage *tex, int x, int y);
 
+    // * Camera *
+    void g2dSetUseCamera(bool use);
+    bool g2dGetUseCamera();
+    void g2dSetCameraXY(int x, int y);
+    int g2dGetCameraX();
+    int g2dGetCameraY();
+
 #ifdef __cplusplus
 }
 #endif
