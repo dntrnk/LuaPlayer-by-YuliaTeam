@@ -30,6 +30,7 @@
 #include "lua/audio.h"
 #include "lua/ctrl.h"
 #include "lua/graphics.h"
+#include "lua/batch.h"
 //#include "lua/particles.h"
 #include "lua/system.h"
 #include "lua/timer.h"
@@ -139,6 +140,7 @@ void initEngine(lua_State *L) {
     INTRAFONT_init(L);
     LUA_init(L);
     GRAPHICS_init(L);
+    BATCH_init(L);
     //PARTICLE_init(L);
     PMP_init(L);
     SYSTEM_init(L);

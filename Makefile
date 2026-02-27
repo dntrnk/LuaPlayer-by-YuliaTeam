@@ -8,7 +8,7 @@ SRC_OBJS = libs/intra/intraFont.o libs/intra/libccc.o libs/ctrl/controls.o \
 	libs/pmp/mpegbase.o libs/pmp/audiodecoder.o libs/pmp/avc.o libs/pmp/mem64.o libs/pmp/pmp.o \
 	libs/pmp/pmp_decode.o libs/pmp/pmp_file.o libs/pmp/pmp_play.o libs/pmp/pmp_read.o \
 	libs/Mp4/atom.o libs/Mp4/util.o libs/Mp4/mp4info.o \
-	libs/callbacks.o
+	libs/callbacks.o libs/Batch/Batch.o
 
 LUA_SRC_OBJECTS = lua/src/lapi.o lua/src/lauxlib.o lua/src/lbaselib.o \
 	lua/src/lcode.o lua/src/ldblib.o lua/src/ldebug.o lua/src/ldo.o \
@@ -19,7 +19,7 @@ LUA_SRC_OBJECTS = lua/src/lapi.o lua/src/lauxlib.o lua/src/lbaselib.o \
 	lua/src/ltable.o lua/src/ltablib.o lua/src/ltm.o lua/src/lundump.o \
 	lua/src/lvm.o lua/src/lzio.o lua/src/print.o
 
-LUA_OBJS = lua/graphics.o lua/LUA.o lua/ctrl.o lua/system.o lua/timer.o lua/audio.o lua/usb.o lua/vfpu_math.o
+LUA_OBJS = lua/graphics.o lua/batch.o lua/LUA.o lua/ctrl.o lua/system.o lua/timer.o lua/audio.o lua/usb.o lua/vfpu_math.o
 
 OBJS = $(SRC_OBJS) $(LUA_SRC_OBJECTS) $(LUA_OBJS) LP.o
 
