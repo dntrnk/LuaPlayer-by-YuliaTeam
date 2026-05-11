@@ -1,7 +1,7 @@
 TARGET = LuaPlayerYT
 
 SRC_OBJS = libs/intra/intraFont.o libs/intra/libccc.o libs/ctrl/controls.o \
-	libs/g2d/glib2d.o libs/intra/libtext.o libs/vfpu_math.o \
+	libs/g2d/glib2d.o libs/g2d/glib2dScreenshot.o libs/intra/libtext.o libs/vfpu_math.o \
 	libs/aalib/pspaalib.o libs/aalib/pspaalibat3.o \
 	libs/aalib/pspaalibogg.o libs/aalib/pspaalibflac.o libs/aalib/pspaalibcommon.o \
 	libs/aalib/pspaalibeffects.o libs/aalib/pspaalibwav.o \

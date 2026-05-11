@@ -127,140 +127,24 @@ static int LUA_getRand(lua_State *L) {
     return 1;
 }
 
-/*static int LUA_screenshot(lua_State *L)
-{
-    if(lua_gettop(L) != 3)
-        return luaL_error(L, "LUA.screenshot(path, width, height) takes 3 arguments");
-
-    const char* path = luaL_checkstring(L, 1);
-    int new_width = luaL_checkint(L, 2);
-    int new_height = luaL_checkint(L, 3);
-
-    png_structp png_write_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (!png_write_ptr)
-        return luaL_error(L, "LUA.screenshot(path, width, height) error creating output file's structure");
-
-    png_infop info_write_ptr = png_create_info_struct(png_write_ptr);
-    if (!info_write_ptr) {
-        png_destroy_write_struct(&png_write_ptr, NULL);
-        return luaL_error(L, "LUA.screenshot(path, width, height) error creating output file's structure");
-    }
-
-    FILE *output_file = fopen(path, "wb");
-    if (!output_file) {
-        png_destroy_write_struct(&png_write_ptr, &info_write_ptr);
-        return luaL_error(L, "LUA.screenshot(path, width, height) can't create/open output file");
-    }
-
-    png_init_io(png_write_ptr, output_file);
-    png_set_IHDR(png_write_ptr, info_write_ptr, new_width, new_height, 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
-    png_write_info(png_write_ptr, info_write_ptr);
-
-    uint8_t *line = (uint8_t*)malloc(new_width * 3);
-
-    int x, y;
-
-    for (y = 0; y < new_height; y++) {
-        for (x = 0; x < new_width; x++) {
-            int x_original = x * g2d_disp_buffer.w / new_width;
-            int y_original = y * g2d_disp_buffer.h / new_height;
-
-            int x1 = x_original;
-            int y1 = y_original;
-            int x2 = x_original + 1 >= g2d_disp_buffer.w ? g2d_disp_buffer.w - 1 : x_original + 1;
-            int y2 = y_original + 1 >= g2d_disp_buffer.h ? g2d_disp_buffer.h - 1 : y_original + 1;
-
-            double x_ratio = (double)(x_original - x1) / (x2 - x1);
-            double y_ratio = (double)(y_original - y1) / (y2 - y1);
-
-            g2dColor color1 = g2d_disp_buffer.data[x1 + y1 * 512];
-            g2dColor color2 = g2d_disp_buffer.data[x2 + y1 * 512];
-            g2dColor color3 = g2d_disp_buffer.data[x1 + y2 * 512];
-            g2dColor color4 = g2d_disp_buffer.data[x2 + y2 * 512];
-
-            uint8_t r = (1 - x_ratio) * (1 - y_ratio) * G2D_GET_R(color1) + x_ratio * (1 - y_ratio) * G2D_GET_R(color2) +
-                        (1 - x_ratio) * y_ratio * G2D_GET_R(color3) + x_ratio * y_ratio * G2D_GET_R(color4);
-            uint8_t g = (1 - x_ratio) * (1 - y_ratio) * G2D_GET_G(color1) + x_ratio * (1 - y_ratio) * G2D_GET_G(color2) +
-                        (1 - x_ratio) * y_ratio * G2D_GET_G(color3) + x_ratio * y_ratio * G2D_GET_G(color4);
-            uint8_t b = (1 - x_ratio) * (1 - y_ratio) * G2D_GET_B(color1) + x_ratio * (1 - y_ratio) * G2D_GET_B(color2) +
-                        (1 - x_ratio) * y_ratio * G2D_GET_B(color3) + x_ratio * y_ratio * G2D_GET_B(color4);
-
-            line[x * 3] = r;
-            line[x * 3 + 1] = g;
-            line[x * 3 + 2] = b;
-        }
-
-        png_write_row(png_write_ptr, line);
-    }
-
-    free(line);
-    png_write_end(png_write_ptr, info_write_ptr);
-    png_destroy_write_struct(&png_write_ptr, &info_write_ptr);
-    fclose(output_file);
-
-    return 0;
-}*/
-
 static int LUA_screenshot(lua_State *L) {
-    if (lua_gettop(L) != 3)
-        return luaL_error(L, "LUA.screenshot(path, width, height) takes 3 arguments");
+    if (lua_gettop(L) != 1 && lua_gettop(L) != 3)
+        return luaL_error(L, "LUA.screenshot(path, width?, height?) takes 1 or 3 arguments");
 
     const char *path = luaL_checkstring(L, 1);
-    int new_width = luaL_checkint(L, 2);
-    int new_height = luaL_checkint(L, 3);
+    int w = luaL_optinteger(L, 2, 480);
+    int h = luaL_optinteger(L, 3, 272);
+    
+    g2dScreenshotErrorCode errorCode = g2dScreenshot(path, w, h);
 
-    FILE *file = fopen(path, "wb");
-    if (!file)
-        return luaL_error(L, "LUA.screenshot(path): Cannot create/open path file.");
-
-    png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (!png_ptr)
-        return luaL_error(L, "LUA.screenshot error creating file's write structure.");
-
-    png_infop info_ptr = png_create_info_struct(png_ptr);
-    if (!info_ptr) {
-        png_destroy_write_struct(&png_ptr, &info_ptr);
-        return luaL_error(L, "LUA.screenshot error creating file's info structure.");
-    }
-
-    png_init_io(png_ptr, file);
-    png_set_IHDR(png_ptr, info_ptr, new_width, new_height, 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
-        PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
-    png_write_info(png_ptr, info_ptr);
-
-    uint8_t *line = (uint8_t *)malloc(new_width * 3);
-    if (!line) {
-        png_destroy_write_struct(&png_ptr, &info_ptr);
-        fclose(file);
-        return luaL_error(L, "Memory allocation failed");
-    }
-
-    int orig_width = g2d_disp_buffer.w;
-    int orig_height = g2d_disp_buffer.h;
-
-    int x, y;
-    for (y = 0; y < new_height; y++) {
-        int orig_y = (y * orig_height) / new_height;
-        g2dColor *row = &g2d_disp_buffer.data[orig_y * 512];
-
-        for (x = 0; x < new_width; x++) {
-            int orig_x = (x * orig_width) / new_width;
-
-            uint8_t r = G2D_GET_R(row[orig_x]);
-            uint8_t g = G2D_GET_G(row[orig_x]);
-            uint8_t b = G2D_GET_B(row[orig_x]);
-
-            line[x * 3] = r;
-            line[x * 3 + 1] = g;
-            line[x * 3 + 2] = b;
-        }
-        png_write_row(png_ptr, line);
-    }
-
-    png_write_end(png_ptr, info_ptr);
-    png_destroy_write_struct(&png_ptr, &info_ptr);
-    free(line);
-    fclose(file);
+    if (errorCode == G2D_ERR_OPEN)
+        return luaL_error(L, "LUA.screenshot: Cannot create/open path file.");
+    else if (errorCode == G2D_ERR_WRITESTRUCT)
+        return luaL_error(L, "LUA.screenshot: Cannot create file's write structure.");
+    else if (errorCode == G2D_ERR_INFOSTRUCT)
+        return luaL_error(L, "LUA.screenshot: Cannot create file's info structure.");
+    else if (errorCode == G2D_ERR_MEMALLOC)
+        return luaL_error(L, "LUA.screenshot: Memory allocation failed.");
 
     return 0;
 }

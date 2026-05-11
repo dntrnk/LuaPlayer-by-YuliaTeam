@@ -23,6 +23,7 @@
 #-----------------------------------------------------------------------------------------------------------------------*/
 
 #include "common.h"
+#include "../libs/g2d/glib2dScreenshot.h"
 
 void save_to_file(const char *filename, unsigned char *data, int size);
 int get_freeRam();
