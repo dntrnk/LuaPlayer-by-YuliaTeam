@@ -2,8 +2,9 @@
 
 #define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 272
+#define SCREEN_STRIDE 512
 
-int g2dScreenshot(const char *path, int width, int height) {
+static int saveToPng32(const char *path, g2dColor *data, int width, int height, int width_stride) {
   FILE *file = fopen(path, "wb");
   if (!file)
     return G2D_ERR_OPEN;
@@ -32,15 +33,12 @@ int g2dScreenshot(const char *path, int width, int height) {
 
   int x, y;
   for (y = 0; y < height; y++) {
-    int orig_y = (y * g2d_disp_buffer.h) / height;
-    g2dColor *row = &g2d_disp_buffer.data[orig_y * 512];
+    g2dColor *row = &data[y * width_stride];
 
     for (x = 0; x < width; x++) {
-      int orig_x = (x * g2d_disp_buffer.w) / width;
-
-      uint8_t r = G2D_GET_R(row[orig_x]);
-      uint8_t g = G2D_GET_G(row[orig_x]);
-      uint8_t b = G2D_GET_B(row[orig_x]);
+      uint8_t r = G2D_GET_R(row[x]);
+      uint8_t g = G2D_GET_G(row[x]);
+      uint8_t b = G2D_GET_B(row[x]);
 
       line[x * 3] = r;
       line[x * 3 + 1] = g;
@@ -55,4 +53,8 @@ int g2dScreenshot(const char *path, int width, int height) {
   fclose(file);
 
   return 0;
+}
+
+int g2dScreenshot(const char *path, int _w, int _h) {
+  return saveToPng32(path, g2d_draw_buffer.data, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_STRIDE);
 }
