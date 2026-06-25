@@ -153,6 +153,13 @@ void SYSTEM_getTITLEID(const char *path, char *title, char *id) {
     char buffer[256];
     FILE *EBOOT = fopen(path, "rb");
 
+    // file is not found or renamed
+    if (EBOOT == NULL) {
+        strcpy(id, "AAAA10000");
+        strcpy(title, "UNKNOWN");
+        return;
+    }
+
     fseek(EBOOT, 0x134, SEEK_SET);
 
     char c;

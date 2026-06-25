@@ -149,7 +149,7 @@ void initEngine(lua_State *L) {
     VFPU_init(L);
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     LPYT_Config config;
 
     strncpy(config.main_script, "script.lua", sizeof(config.main_script) - 1);
@@ -164,7 +164,7 @@ int main() {
     luaL_openlibs(L);
     initEngine(L);
 
-    SYSTEM_getTITLEID("EBOOT.PBP", LPYTGameTitle, LPYTGameID);
+    SYSTEM_getTITLEID(argv[0], LPYTGameTitle, LPYTGameID);
 
     if (scePowerGetCpuClockFrequency() != 333)
         scePowerSetClockFrequency(333, 333, 166);
