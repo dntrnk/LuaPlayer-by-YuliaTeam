@@ -6,14 +6,16 @@
 // Please report bugs at : geecko.dev@free.fr
 
 #include "glib2d.h"
-#include "../vfpu_math.h"
 
 #include <pspkernel.h>
 #include <pspdisplay.h>
 #include <pspgu.h>
 #include <vram.h>
 #include <malloc.h>
+#include <stdlib.h>
 #include <math.h>
+
+#include "pspmath.h"
 
 #define PSP_LINE_SIZE       (512)
 #define PIXEL_SIZE          (4)

@@ -21,7 +21,7 @@
 #include <math.h>
 
 #include "intraFont.h"
-#include "../vfpu_math.h"
+#include "pspmath.h"
 
 static unsigned int __attribute__((aligned(16))) clut[16];
 

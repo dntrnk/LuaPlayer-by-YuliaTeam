@@ -1,7 +1,7 @@
 TARGET = LuaPlayerYT
 
 SRC_OBJS = libs/intra/intraFont.o libs/intra/libccc.o libs/ctrl/controls.o \
-	libs/g2d/glib2d.o libs/g2d/glib2dScreenshot.o libs/intra/libtext.o libs/vfpu_math.o \
+	libs/g2d/glib2d.o libs/g2d/glib2dScreenshot.o libs/intra/libtext.o \
 	libs/aalib/pspaalib.o libs/aalib/pspaalibat3.o \
 	libs/aalib/pspaalibogg.o libs/aalib/pspaalibflac.o libs/aalib/pspaalibcommon.o \
 	libs/aalib/pspaalibeffects.o libs/aalib/pspaalibwav.o \
@@ -36,7 +36,7 @@ PSP_FW_VERSION = 660
 LIBS = -lpng -ljpeg -lpsppower -lz -lpspgu -lm -lc -lFLAC -lvorbisidec -lpspaudio \
        -lpspaudiocodec -lpspaudiolib -lpspatrac3 -lpspmp3 -lpspmpeg \
        -lpspsystemctrl_kernel -lpsprtc -lpspgum -lpspvfpu -lpspusb -lpspusbstor \
-       -lpspkubridge -lpspvram -lbz2 -lfreetype -lpspvaudio
+       -lpspkubridge -lpspvram -lbz2 -lfreetype -lpspvaudio -lpspmath
 
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = LuaPlayerYT 0.5b5
